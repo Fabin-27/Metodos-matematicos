@@ -1,0 +1,58 @@
+#Função: (SEN(X3) – 2X +5):
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def func(x):
+    return np.sin(x**3) - 2*x + 5
+
+def deriv_func(x):
+    return 3*x**2 * np.cos(x**3) - 2
+
+def newton_raphson(func, deriv_func, x0, tol=1e-5, max_iter=1000):
+    x = x0
+    iters = 0
+    while abs(func(x)) > tol and iters < max_iter:
+        try:
+            x = x - func(x) / deriv_func(x)
+        except ZeroDivisionError:
+            return None, iters
+        iters += 1
+    return x if abs(func(x)) <= tol else None, iters
+
+def find_all_roots(func, deriv_func, a, b, num_points=100):
+    roots = []
+    x_vals = np.linspace(a, b, num_points)
+    tol = 1e-5
+
+    for x0 in x_vals:
+        root, _ = newton_raphson(func, deriv_func, x0)
+
+        if root is not None and all(abs(root - r) > tol for r in roots):
+            roots.append(root)
+
+    return np.unique(np.round(roots, decimals=5))
+
+x_vals = np.linspace(2, 4, 1000)
+y_vals = func(x_vals)
+
+plt.plot(x_vals, y_vals, label='sin(x^3) - 2x + 5')
+plt.axhline(0, color='black', linewidth=1)
+
+
+a, b = -10, 10
+roots = find_all_roots(func, deriv_func, a, b)
+
+
+for root in roots:
+    plt.plot(root, func(root), 'ro')
+    plt.text(root, func(root), f'{root:.2f}', fontsize=9, ha='right')
+
+plt.title("Gráfico da Função com Raízes Marcadas (Newton-Raphson)")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.grid(True)
+plt.legend()
+plt.show()
+
+print(f"Raízes encontradas no intervalo [-10, 10]: {roots}")
