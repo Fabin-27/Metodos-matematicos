@@ -37,7 +37,7 @@ x_vals = np.linspace(2, 4, 1000)
 y_vals = func(x_vals)
 
 plt.plot(x_vals, y_vals, label='sin(x^3) - 2x + 5')
-plt.axhline(0, color='black', linewidth=1)
+plt.axhline(0, color='blue', linewidth=1)
 
 
 a, b = -10, 10
@@ -48,7 +48,7 @@ for root in roots:
     plt.plot(root, func(root), 'ro')
     plt.text(root, func(root), f'{root:.2f}', fontsize=9, ha='right')
 
-plt.title("Gráfico da Função com Raízes Marcadas (Newton-Raphson)")
+plt.title("Gráfico da Função (Newton-Raphson)")
 plt.xlabel("x")
 plt.ylabel("f(x)")
 plt.grid(True)
